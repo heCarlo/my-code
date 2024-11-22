@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tata1212
+      POSTGRES_DB: desafio01
+    ports:
+      - "5432:5432"  # Mapeando a porta 5432 do banco de dados
+    networks:
+      - app-network
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql+psycopg2://postgres:tata1212@db:5432/desafio01"
+    ports:
+      - "8000:8000"  # Mapeando a porta 8000 do serviço web
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
