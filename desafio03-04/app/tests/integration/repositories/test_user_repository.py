@@ -24,7 +24,6 @@ def db_session():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
-# Fixture para inserir as roles
 @pytest.fixture
 def sample_roles(db_session):
     role_admin = Role(description="Administrador")
@@ -36,7 +35,6 @@ def sample_roles(db_session):
     db_session.refresh(role_user)
     return role_admin, role_user
 
-# Fixture para inserir as claims
 @pytest.fixture
 def sample_claims(db_session):
     claim_view_reports = Claim(description="Visualizar Relatórios", active=True)
@@ -51,7 +49,6 @@ def sample_claims(db_session):
     db_session.refresh(claim_delete_records)
     return claim_view_reports, claim_edit_data, claim_delete_records
 
-# Fixture para inserir os usuários e associar com as roles e claims
 @pytest.fixture
 def sample_users(db_session, sample_roles, sample_claims):
     role_admin, role_user = sample_roles
@@ -79,7 +76,6 @@ def sample_users(db_session, sample_roles, sample_claims):
     db_session.refresh(user_carlos)
     db_session.refresh(user_gabrielly)
 
-    # Associar claims a usuários
     user_claim_carlos_1 = UserClaim(user_id=user_carlos.id, claim_id=claim_view_reports.id)
     user_claim_carlos_2 = UserClaim(user_id=user_carlos.id, claim_id=claim_edit_data.id)
     user_claim_gabrielly_1 = UserClaim(user_id=user_gabrielly.id, claim_id=claim_view_reports.id)
@@ -116,13 +112,11 @@ def test_user_role_and_claim(db_session, sample_users, sample_claims):
     user_carlos, user_gabrielly = sample_users
     claim_view_reports, claim_edit_data, claim_delete_records = sample_claims
 
-    # Verificar o role e as claims de Carlos
     assert user_carlos.role.description == "Administrador"
     assert len(user_carlos.claims) == 2
     assert user_carlos.claims[0].description == "Visualizar Relatórios"
     assert user_carlos.claims[1].description == "Editar Dados"
 
-    # Verificar o role e as claims de Gabrielly
     assert user_gabrielly.role.description == "Usuário Padrão"
     assert len(user_gabrielly.claims) == 1
     assert user_gabrielly.claims[0].description == "Visualizar Relatórios"
@@ -175,7 +169,6 @@ def test_create_user_with_duplicate_email(db_session, sample_roles):
     db_session.commit()
     db_session.refresh(user1)
 
-    # Testar se ocorre erro ao tentar criar um usuário com email duplicado
     try:
         db_session.add(user2)
         db_session.commit()
@@ -189,14 +182,12 @@ def test_delete_user_and_related_claims(db_session, sample_users, sample_claims)
     user_carlos, _ = sample_users
     claim_view_reports, _, _ = sample_claims
 
-    # Verificar se a associação existe antes de deletar
     user_claim = db_session.query(UserClaim).filter_by(user_id=user_carlos.id, claim_id=claim_view_reports.id).first()
     assert user_claim is not None
 
     db_session.delete(user_carlos)
     db_session.commit()
 
-    # Verificar se a associação foi removida
     user_claim = db_session.query(UserClaim).filter_by(user_id=user_carlos.id, claim_id=claim_view_reports.id).first()
     assert user_claim is None
 
@@ -204,17 +195,13 @@ def test_delete_role_with_users(db_session, sample_roles, sample_users):
     role_admin, _ = sample_roles
     user_carlos, _ = sample_users
 
-    # Verificar o role do usuário
     assert user_carlos.role.description == "Administrador"
 
-    # Atualizar o role de usuário para outro role antes de deletar
     db_session.query(User).filter(User.role_id == role_admin.id).update({User.role_id: 2})
     db_session.commit()
 
-    # Deletar a role
     db_session.delete(role_admin)
     db_session.commit()
 
-    # Verificar se o role foi atualizado
     updated_user = db_session.query(User).filter(User.id == user_carlos.id).one()
     assert updated_user.role_id == 2
