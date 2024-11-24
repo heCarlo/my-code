@@ -13,9 +13,35 @@ Antes de rodar o projeto localmente, verifique se as seguintes ferramentas estã
 - **pip** ou **Poetry** para gerenciar pacotes Python
 - **Alembic** para migrações do banco de dados
 
-### Passo 1: Instalar as Dependências
+### Passo 1: Criar e Ativar o Ambiente Virtual
 
-Instale as dependências do projeto utilizando o gerenciador de pacotes Python (pip ou Poetry):
+Antes de instalar as dependências, é necessário criar e ativar o ambiente virtual.
+
+1. **Criar o Ambiente Virtual** (caso não tenha feito isso anteriormente):
+
+   - Se estiver utilizando **venv** (pip):
+   
+     ```bash
+     python -m venv .venv
+     ```
+
+   - Se estiver utilizando **Poetry**, o ambiente virtual será criado automaticamente quando você rodar `poetry install`.
+
+2. **Ativar o Ambiente Virtual**:
+
+   - **Windows**:
+     ```bash
+     .\.venv\Scripts\activate
+     ```
+
+   - **macOS/Linux**:
+     ```bash
+     source venv/bin/activate
+     ```
+
+### Passo 2: Instalar as Dependências
+
+Após ativar o ambiente virtual, instale as dependências do projeto utilizando o gerenciador de pacotes Python (pip ou Poetry):
 
 - Se estiver utilizando **pip**, execute o comando:
   
@@ -25,7 +51,7 @@ Instale as dependências do projeto utilizando o gerenciador de pacotes Python (
   
   `poetry install`
 
-### Passo 2: Configurar o Banco de Dados PostgreSQL
+### Passo 3: Configurar o Banco de Dados PostgreSQL
 
 1. **Instalar o PostgreSQL**:
    
@@ -48,7 +74,7 @@ Instale as dependências do projeto utilizando o gerenciador de pacotes Python (
 
      `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@db:5432/postgres`
 
-### Passo 3: Rodar as Migrações do Banco de Dados
+### Passo 4: Rodar as Migrações do Banco de Dados
 
 No ambiente local, antes de rodar a aplicação, é necessário aplicar as migrações manualmente. Utilize o Alembic para isso.
 
@@ -58,7 +84,7 @@ No ambiente local, antes de rodar a aplicação, é necessário aplicar as migra
 
 Este comando aplicará as migrações necessárias para o banco de dados, atualizando-o para a versão mais recente.
 
-### Passo 4: Rodar o Projeto Localmente
+### Passo 5: Rodar o Projeto Localmente
 
 Com as dependências instaladas, as migrações aplicadas e o banco de dados configurado, você pode rodar o projeto localmente com FastAPI:
 
@@ -66,7 +92,7 @@ Com as dependências instaladas, as migrações aplicadas e o banco de dados con
 
   `uvicorn app.main:app --reload`
 
-Isso iniciará o servidor FastAPI, geralmente acessível em `http://localhost:8000`.
+Isso iniciará o servidor FastAPI, geralmente acessível em `http://localhost:8000/docs/`.
 
 ---
 
