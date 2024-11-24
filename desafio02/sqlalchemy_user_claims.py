@@ -3,10 +3,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import func
 
-# criação da base para as classes orm
 Base = declarative_base()
-
-# definição das tabelas como classes
 
 class Role(Base):
     """
@@ -69,7 +66,6 @@ class UserClaim(Base):
     claim = relationship('Claim', back_populates='user_claims')
 
 
-# configuração do banco de dados
 DATABASE_URL = "postgresql+psycopg2://postgres:tata1212@localhost:5432/desafio01"
 """
 a url de conexão com o banco de dados, especificando o tipo de banco (postgresql), 
@@ -80,7 +76,6 @@ engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# consulta
 results = session.query(
     User.name.label('user_name'),
     User.email.label('user_email'),
@@ -109,7 +104,6 @@ a consulta utiliza joins para combinar os dados das tabelas de 'users', 'roles',
 os resultados são agrupados por usuário e papel, e ordenados pelo nome do usuário.
 """
 
-# exibindo os resultados
 for result in results:
     print(f"user: {result.user_name}, email: {result.user_email}, role: {result.role_description}, claims: {', '.join(result.claims_descriptions)}")
     """
