@@ -27,4 +27,4 @@ jobs:
           pip install -r desafio03-04/requirements.txt
 
       - name: Rodar os testes
-        run: python run_tests.py
+        run: python desafio03-04/run_tests.py
