@@ -67,4 +67,3 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="email already registered")
     
     return UserService.create_user(db, user)
-#teste
