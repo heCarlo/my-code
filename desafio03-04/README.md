@@ -17,15 +17,21 @@ Antes de rodar o projeto localmente, verifique se as seguintes ferramentas estã
 
 Antes de instalar as dependências, é necessário criar e ativar o ambiente virtual.
 
-1. **Criar o Ambiente Virtual** (caso não tenha feito isso anteriormente):
+1. **Navegar até o Diretório do Projeto**:
+
+   Antes de criar o ambiente virtual, certifique-se de estar no diretório correto do projeto. Use o comando:
+   
+   `cd .\desafio03-04\`
+
+2. **Criar o Ambiente Virtual** (caso não tenha feito isso anteriormente):
 
    - Se estiver utilizando **venv** (pip):
-   
+     
      Execute o comando para criar o ambiente virtual:
      
      `python -m venv .venv`
 
-2. **Ativar o Ambiente Virtual**:
+3. **Ativar o Ambiente Virtual**:
 
    - **Windows**:
      
