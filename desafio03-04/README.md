@@ -1,6 +1,6 @@
 # Documentação de Execução Local e Deploy Produtivo
 
-Este documento descreve os passos necessários para executar o projeto em ambiente local com **FastAPI** e **PostgreSQL** e como realizar o deploy em um ambiente produtivo utilizando **Docker**.
+Este documento descreve os passos necessários para executar o projeto em ambiente local com **FastAPI** e **PostgreSQL**, bem como como fazer o deploy do projeto na **Azure** utilizando **CLI** e **VSCode**. **Docker** não será utilizado para deploy.
 
 ## 1. Executar o Projeto Localmente com FastAPI e PostgreSQL
 
@@ -21,28 +21,30 @@ Antes de instalar as dependências, é necessário criar e ativar o ambiente vir
 
    - Se estiver utilizando **venv** (pip):
    
-     ```bash
-     python -m venv .venv
-     ```
+     Execute o comando para criar o ambiente virtual:
+     
+     `python -m venv .venv`
 
 2. **Ativar o Ambiente Virtual**:
 
    - **Windows**:
-     ```bash
-     .\.venv\Scripts\activate
-     ```
+     
+     Execute o comando:
+     
+     `.venv\Scripts\activate`
 
    - **macOS/Linux**:
-     ```bash
-     source venv/bin/activate
-     ```
+     
+     Execute o comando:
+     
+     `source .venv/bin/activate`
 
 ### Passo 2: Instalar as Dependências
 
 Após ativar o ambiente virtual, instale as dependências do projeto utilizando o gerenciador de pacotes Python (pip):
 
-- Se estiver utilizando **pip**, execute o comando:
-  
+- Para instalar as dependências, execute:
+
   `pip install -r requirements.txt`
 
 ### Passo 3: Configurar o Banco de Dados PostgreSQL
@@ -72,7 +74,7 @@ Após ativar o ambiente virtual, instale as dependências do projeto utilizando 
 
 No ambiente local, antes de rodar a aplicação, é necessário aplicar as migrações manualmente. Utilize o Alembic para isso.
 
-- Para rodar as migrações manualmente, execute o comando:
+- Para rodar as migrações manualmente, execute:
 
   `alembic upgrade head`
 
@@ -82,7 +84,7 @@ Este comando aplicará as migrações necessárias para o banco de dados, atuali
 
 Com as dependências instaladas, as migrações aplicadas e o banco de dados configurado, você pode rodar o projeto localmente com FastAPI:
 
-- Para rodar o servidor localmente, execute o comando:
+- Para rodar o servidor localmente, execute:
 
   `uvicorn app.main:app --reload`
 
@@ -90,7 +92,7 @@ Isso iniciará o servidor FastAPI, geralmente acessível em `http://localhost:80
 
 ---
 
-## 2. Executar 'deploy' do Projeto em Ambiente Produtivo (Docker)
+## 2. Executar o projeto em Docker
 
 ### Pré-requisitos
 
@@ -157,7 +159,67 @@ Isso irá limpar os containers e volumes de dados, útil para resetar o banco de
 
 ---
 
-## 3. Testes e Cobertura com pytest
+## 3. Deploy do Projeto na Azure via CLI
+
+### Pré-requisitos
+
+- **Conta na Azure**: Certifique-se de que você possui uma conta na Azure.
+- **Azure CLI**: Acesse [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) e siga as instruções de instalação.
+- **Git**: Se ainda não tiver o Git instalado, instale-o [aqui](https://git-scm.com/).
+
+### Passo 1: Fazer Login no Azure
+
+Antes de realizar qualquer operação, é necessário fazer login na Azure usando a CLI:
+
+Execute o comando para login:
+
+`az login`
+
+Isso abrirá uma janela para inserir suas credenciais da Azure.
+
+### Passo 2: Criar um Grupo de Recursos
+
+Se você ainda não tem um grupo de recursos, crie um com o comando:
+
+`az group create --name shipay-app --location eastus`
+
+### Passo 3: Criar o App Service na Azure
+
+Crie um **App Service** para o deploy da aplicação:
+
+`az webapp up --name shipay --resource-group shipay-app --runtime "PYTHON|3.8" --sku B1`
+
+Isso criará um App Service na Azure, configurado para rodar uma aplicação Python.
+
+### Passo 4: Configurar Variáveis de Ambiente
+
+É necessário configurar as variáveis de ambiente para o banco de dados e outras configurações necessárias. Você pode fazer isso diretamente no portal da Azure ou via CLI.
+
+Para adicionar a variável de ambiente no App Service:
+
+`az webapp config appsettings set --name shipay --resource-group shipay-app --settings DATABASE_URL=postgresql+psycopg2://postgres:tata1212@<HOST_AZURE>:5432/postgres`
+
+### Passo 5: Deploy da Aplicação
+
+Com tudo configurado, você pode realizar o deploy da aplicação utilizando o **Git**. Faça um push da aplicação para o repositório remoto (ou crie um repositório se necessário).
+
+No repositório da sua aplicação, adicione o remote do App Service da Azure:
+
+`git remote add azure https://<USERNAME>@shipay.scm.azurewebsites.net:443/shipay.git`
+
+Agora, envie a aplicação para a Azure com o comando:
+
+`git push azure master`
+
+### Passo 6: Acessar a Aplicação na Azure
+
+Após o deploy ser realizado com sucesso, você pode acessar a aplicação via URL pública fornecida pela Azure, que será algo como:
+
+`https://shipay.azurewebsites.net`
+
+---
+
+## 4. Testes e Cobertura com pytest
 
 O projeto utiliza **pytest** para garantir a qualidade do código por meio de testes automatizados. Para rodar os testes:
 
