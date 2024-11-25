@@ -1,3 +1,10 @@
+"""
+serviço para gerenciar as operações relacionadas aos usuários
+
+este serviço fornece métodos para criar e buscar usuários no sistema,
+além de gerar senhas aleatórias e realizar o hash das senhas
+"""
+
 import random
 import string
 from datetime import date
@@ -12,10 +19,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class UserService:
     """
-    serviço para gerenciar as operações relacionadas aos usuários
+    serviço para gerenciar os usuários do sistema
 
-    este serviço fornece métodos para criar e buscar usuários no sistema,
-    além de gerar senhas aleatórias e realizar o hash das senhas
+    classe que oferece métodos para criação de usuários, busca por e-mail
+    e geração de senhas aleatórias e seguras
     """
 
     @staticmethod
@@ -88,7 +95,7 @@ class UserService:
             created_at=date.today()
         )
 
-        return UserRepository.create_user(db, new_user)
+        return UserRepository(db).create_user(db, new_user)
 
     @staticmethod
     def get_user_by_email(db: Session, email: str) -> User | None:
@@ -105,4 +112,4 @@ class UserService:
         - email: "carlos@example.com"
         - retorna o usuário com o e-mail "carlos@example.com", caso exista
         """
-        return UserRepository.get_user_by_email(db, email)
+        return UserRepository(db).get_user_by_email(db, email)

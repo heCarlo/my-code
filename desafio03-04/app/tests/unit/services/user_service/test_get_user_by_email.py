@@ -8,7 +8,6 @@ from app.repositories.user_repository import UserRepository
 
 @pytest.fixture
 def db_session():
-    """Mock da sessão do banco de dados."""
     return MagicMock(spec=Session)
 
 @patch.object(UserRepository, 'get_user_by_email')

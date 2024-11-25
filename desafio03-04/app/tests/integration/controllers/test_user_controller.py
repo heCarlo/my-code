@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.services.user_service import UserService
-from app.services.role_service import RoleRepository, RoleService
+from app.services.role_service import RoleService
 from app.schemas.user_schema import UserCreate, UserResponse
 from app.schemas.role_schema import RoleResponse
 from app.database.database import get_db
@@ -64,7 +64,7 @@ def test_create_user_with_existing_email(client):
         response = client.post("/users/", json=user_data)
     
     assert response.status_code == 400
-    assert response.json() == {"detail": "Email already registered"}
+    assert response.json() == {"detail": "email already registered"}
 
 def test_get_role_by_id(client):
     with patch.object(RoleService, 'get_role_by_id', return_value={
@@ -80,4 +80,4 @@ def test_get_role_by_id_not_found(client):
         response = client.get("/role/999")
     
     assert response.status_code == 404
-    assert response.json() == {"detail": "Role not found"}
+    assert response.json() == {"detail": "role not found"}

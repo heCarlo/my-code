@@ -1,13 +1,20 @@
+"""
+serviço para gerenciar as operações relacionadas aos papéis (roles) no sistema
+
+este serviço fornece métodos para interagir com os papéis do sistema,
+como buscar um papel por seu id
+"""
+
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from ..repositories.role_repository import RoleRepository
 
 class RoleService:
     """
-    serviço para gerenciar as operações relacionadas aos papéis (roles) no sistema
+    serviço para gerenciar os papéis (roles) no sistema
 
-    este serviço fornece métodos para interagir com os papéis do sistema,
-    como buscar um papel por seu id
+    classe que oferece métodos para realizar operações relacionadas aos papéis
+    no sistema, como busca de um papel por id.
     """
     
     @staticmethod
