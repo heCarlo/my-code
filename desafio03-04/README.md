@@ -136,6 +136,38 @@ Para rodar os containers em segundo plano (modo "detached"), use a opção `-d`:
 
 Este comando irá inicializar a aplicação e o banco de dados (PostgreSQL) conforme configurado no `docker-compose.yml`. No caso do ambiente Docker, o comando `docker-compose` já está configurado para rodar as migrações automaticamente.
 
+## Solução para Problemas de Formato de Linha (CRLF para LF)
+
+Quando scripts ou arquivos são criados ou editados em sistemas Windows, eles podem ser salvos com o formato de linha CRLF (`\r\n`), que não é reconhecido corretamente em ambientes Linux, como os utilizados nos containers Docker. Isso pode causar erros como:
+
+`/usr/bin/env: ‘bash\r’: No such file or directory`
+
+Para evitar esses problemas, siga as instruções abaixo para garantir que os arquivos estejam no formato correto (**LF**).
+
+### Identificar e Corrigir o Problema
+
+1. **Identifique o arquivo problemático.**
+   O pode ocorrer no script `wait-for-it.sh`.
+
+2. **Converta o arquivo para o formato LF.**
+
+   #### 2.1 Usando `dos2unix`
+   Se você tiver acesso a um ambiente Linux/Unix (ou WSL):
+   1. Navegue até o diretório onde o arquivo está localizado.
+   2. Execute o comando:
+      `dos2unix nome_do_arquivo.sh`
+
+   #### 2.2 Usando Visual Studio Code
+   1. Abra o arquivo no **VS Code**.
+   2. No canto inferior direito, clique onde está escrito `CRLF`.
+   3. Selecione a opção `LF`.
+   4. Salve o arquivo.
+
+3. **Reconstrua o ambiente Docker.**
+   Para garantir que as alterações sejam aplicadas, reconstrua os containers:
+   `docker-compose down`
+   `docker-compose up --build`
+
 ### **Uso do `wait-for-it` no Ambiente Docker**
 
 O `wait-for-it` é utilizado para garantir que o serviço do banco de dados PostgreSQL esteja totalmente disponível antes da aplicação FastAPI ser iniciada. Isso é necessário porque, em ambientes Docker, a ordem de inicialização dos containers não é garantida, e o serviço de banco de dados pode não estar pronto para aceitar conexões no momento em que a aplicação tenta acessá-lo. Ao usar o `wait-for-it`, o processo de inicialização da aplicação é automaticamente adiado até que o banco de dados esteja totalmente operacional, evitando falhas de conexão e melhorando a confiabilidade do deploy. Essa abordagem facilita o gerenciamento da ordem de execução dos serviços no Docker e assegura que a comunicação entre a aplicação e o banco de dados ocorra sem problemas de sincronização.
