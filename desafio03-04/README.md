@@ -292,6 +292,45 @@ Para testar a performance e a escalabilidade do sistema, o projeto utiliza a fer
 
    Essas métricas são úteis para avaliar o desempenho do sistema sob carga e identificar possíveis gargalos ou falhas.
 
+---
+
+## 6. Configuração do Pipeline de Integração Contínua (CI) com GitHub Actions
+
+O projeto utiliza **GitHub Actions** para configurar um pipeline de integração contínua (CI), garantindo que os testes sejam executados automaticamente a cada alteração no código. Abaixo estão os detalhes da configuração do pipeline:
+
+1. **Configuração Geral**:
+   O pipeline é acionado em dois cenários:
+   - Push no branch `main`.
+   - Abertura de pull requests direcionados ao branch `main`.
+
+2. **Ambiente de Execução**:
+   - O pipeline é executado em um ambiente Ubuntu (`ubuntu-latest`).
+   - Utiliza Python 3.12 como versão padrão.
+   - Configura um serviço PostgreSQL (versão 15) para ser utilizado nos testes.
+
+3. **Configuração do Banco de Dados**:
+   - O serviço PostgreSQL é configurado com as seguintes credenciais:
+     - **Usuário**: `test_user`
+     - **Senha**: `test_password`
+     - **Banco de Dados**: `test_db`
+   - O serviço utiliza as configurações de saúde (`pg_isready`) para garantir que o banco esteja pronto antes da execução dos testes.
+
+4. **Passos do Pipeline**:
+   O pipeline realiza as seguintes etapas:
+   - **Checkout do Código**:
+     Faz o download do código do repositório utilizando a ação `actions/checkout@v3`.
+   - **Configuração do Ambiente Python**:
+     Configura o Python 3.12 no ambiente utilizando `actions/setup-python@v4`.
+   - **Instalação de Dependências**:
+     Atualiza o `pip` e instala as dependências definidas no arquivo `requirements.txt`.
+   - **Configuração de Variáveis de Ambiente**:
+     Exporta a variável `DATABASE_URL`, necessária para que os testes se conectem ao banco PostgreSQL.
+   - **Aguardando Inicialização do Banco de Dados**:
+     Usa o comando `pg_isready` para garantir que o banco esteja pronto antes de prosseguir.
+   - **Execução de Testes**:
+     Executa o script `run_tests.py`, utilizando a variável de ambiente `DATABASE_URL`.
+
+---
 
 ### Aviso Importante para Ambiente de Desenvolvimento:
 
