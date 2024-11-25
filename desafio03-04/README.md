@@ -70,11 +70,11 @@ Após ativar o ambiente virtual, instale as dependências do projeto utilizando 
 
    - Se estiver rodando localmente, altere o valor para:
 
-     `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@localhost:5432/postgres`
+     `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>`
 
    - Se estiver rodando no Docker, altere o valor para:
 
-     `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@db:5432/postgres`
+     `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@db:5432/<nome-do-banco>`
 
 ### Passo 4: Rodar as Migrações do Banco de Dados
 
@@ -203,7 +203,7 @@ Isso criará um App Service na Azure, configurado para rodar uma aplicação Pyt
 
 Para adicionar a variável de ambiente no App Service:
 
-`az webapp config appsettings set --name shipay --resource-group shipay-app --settings DATABASE_URL=postgresql+psycopg2://postgres:tata1212@<HOST_AZURE>:5432/postgres`
+`az webapp config appsettings set --name shipay --resource-group shipay-app --settings DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@<HOST_AZURE>:5432/<nome-do-banco>`
 
 ### Passo 5: Deploy da Aplicação
 
@@ -226,6 +226,14 @@ Após o deploy ser realizado com sucesso, você pode acessar a aplicação via U
 ---
 
 ## 4. Cobertura de Testes Unitários e de Integração com pytest e TestClient
+
+**Atenção:** Antes de rodar os testes, verifique se a configuração do banco de dados no arquivo `.env` está apontando para o banco de dados local (**localhost**). Caso esteja configurado para o banco do Docker, atualize a variável `DATABASE_URL` para o seguinte valor:
+
+`DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>`
+
+Certifique-se de que o banco de dados local esteja em funcionamento antes de executar os testes.
+
+---
 
 O projeto utiliza **pytest** e **TestClient** para garantir a qualidade do código por meio de testes automatizados. Para rodar os testes:
 
@@ -344,10 +352,10 @@ O projeto utiliza **GitHub Actions** para configurar um pipeline de integração
 
   - **Para execução local (localhost)**, a URL do banco deve ser configurada como:
 
-    `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@localhost:5432/postgres`
+    `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>`
 
   - **Para execução em Docker**, a URL do banco deve ser configurada como:
 
-    `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@db:5432/postgres`
+    `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@db:5432/<nome-do-banco>`
 
   Isso assegura que os testes de banco de dados e as consultas realizadas no ambiente de desenvolvimento funcionem corretamente, seja localmente ou dentro de um contêiner Docker.
