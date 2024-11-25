@@ -70,11 +70,20 @@ Após ativar o ambiente virtual, instale as dependências do projeto utilizando 
 
    - Se estiver rodando localmente, altere o valor para:
 
-     `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>`
+     DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>
 
    - Se estiver rodando no Docker, altere o valor para:
 
-     `DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@db:5432/<nome-do-banco>`
+     DATABASE_URL=postgresql+psycopg2://<usuario>:<senha>@db:5432/<nome-do-banco>
+
+   Além disso, ainda no .env, você deve configurar as variáveis de ambiente do `docker-compose.yml` para o PostgreSQL:
+
+   environment:
+     - POSTGRES_USER=<usuario>
+     - POSTGRES_PASSWORD=<senha>
+     - POSTGRES_DB=<nome-do-banco> 
+
+   Isso garantirá que a conexão ao banco de dados no Docker seja feita corretamente, utilizando o serviço `db` como o host do banco de dados.
 
 ### Passo 4: Rodar as Migrações do Banco de Dados
 

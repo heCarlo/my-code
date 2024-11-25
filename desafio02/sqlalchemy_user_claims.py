@@ -66,7 +66,7 @@ class UserClaim(Base):
     claim = relationship('Claim', back_populates='user_claims')
 
 
-DATABASE_URL = "postgresql+psycopg2://postgres:tata1212@localhost:5432/desafio01"
+DATABASE_URL = "postgresql+psycopg2://<usuario>:<senha>@localhost:5432/<nome-do-banco>"
 """
 a url de conexão com o banco de dados, especificando o tipo de banco (postgresql), 
 usuário, senha, host e nome do banco.
