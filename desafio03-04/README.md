@@ -237,6 +237,14 @@ O projeto utiliza **pytest** e **TestClient** para garantir a qualidade do códi
 
    Este comando executará os testes e, ao final, mostrará um relatório de cobertura, indicando quais partes do código foram cobertas pelos testes.
 
+3. **Se o diretório não for identificado**:
+
+   Caso você receba um erro informando que o diretório ou módulo não foi encontrado (por exemplo, `ModuleNotFoundError: No module named 'app'`), você pode rodar os testes através do script `run_tests.py`, que ajusta automaticamente o caminho do Python. Execute o seguinte comando:
+
+   `python run_tests.py`
+
+   Isso garantirá que o caminho do projeto seja configurado corretamente antes da execução dos testes.
+
 ---
 
 ## 5. Teste de Carga com Locust
