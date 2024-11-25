@@ -219,9 +219,9 @@ Após o deploy ser realizado com sucesso, você pode acessar a aplicação via U
 
 ---
 
-## 4. Testes e Cobertura com pytest
+## 4. Cobertura de Testes Unitários e de Integração com pytest e TestClient
 
-O projeto utiliza **pytest** para garantir a qualidade do código por meio de testes automatizados. Para rodar os testes:
+O projeto utiliza **pytest** e **TestClient** para garantir a qualidade do código por meio de testes automatizados. Para rodar os testes:
 
 1. **Rodar os testes**:
 
@@ -237,11 +237,64 @@ O projeto utiliza **pytest** para garantir a qualidade do código por meio de te
 
    Este comando executará os testes e, ao final, mostrará um relatório de cobertura, indicando quais partes do código foram cobertas pelos testes.
 
+---
+
+## 5. Teste de Carga com Locust
+
+Para testar a performance e a escalabilidade do sistema, o projeto utiliza a ferramenta **Locust** para realizar testes de carga, simulando múltiplos usuários interagindo com os endpoints do sistema.
+
+### Passos para rodar os testes de carga com Locust:
+
+1. **Rodar o teste de carga**:
+
+   Para rodar o teste de carga com Locust, execute o seguinte comando na raiz do projeto:
+
+   `locust -f app\tests\load\locustfile.py -H http://localhost:8000`
+
+   Onde `locustfile.py` é o arquivo que contém a definição das tarefas e os testes a serem executados pelos usuários simulados.
+
+2. **Configuração do ambiente Locust**:
+
+   Após rodar o comando, o Locust estará disponível na interface web, geralmente em:
+
+   `http://localhost:8089`
+
+   Na interface web, você poderá configurar:
+   - **Número de usuários simulados** (quantos usuários você quer que o Locust simule)
+   - **Taxa de spawn** (quantos usuários por segundo serão criados)
+
+   Clique em "Start Swarming" para iniciar o teste de carga.
+
+3. **Tarefas Simuladas**:
+
+   O arquivo `locustfile.py` contém as definições das tarefas que os usuários irão executar. No exemplo, temos tarefas como:
+   
+   - **Obter role por ID**: Envia uma solicitação GET para um endpoint simulando a obtenção de uma role por ID.
+   - **Criar usuário**: Envia uma solicitação POST para o endpoint de criação de usuário.
+
+   Essas tarefas são associadas a prioridades e podem incluir verificações de status e manipulação de respostas.
+
+4. **Analisando os Resultados**:
+
+   Após iniciar o teste, a interface web do Locust mostrará diversas métricas em tempo real, como:
+   - **Tempo de resposta médio**
+   - **Taxa de sucesso e falhas**
+   - **Número de requisições por segundo**
+   - **Percentis de tempo de resposta** (p. ex., 95% das requisições retornaram em X segundos)
+
+   Essas métricas são úteis para avaliar o desempenho do sistema sob carga e identificar possíveis gargalos ou falhas.
+
 
 ### Aviso Importante para Ambiente de Desenvolvimento:
 
-- **Em ambiente de desenvolvimento(localhost)**, é necessário usar o banco de dados local para garantir que os testes funcionem corretamente. Certifique-se de que a variável `DATABASE_URL` esteja configurada para o banco local no arquivo `.env` como:
+- **Em ambiente de desenvolvimento (localhost ou Docker)**, a URL do banco de dados deve ser configurada corretamente no arquivo `.env`, dependendo de onde o ambiente está sendo executado.
 
-  `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@localhost:5432/postgres`
+  - **Para execução local (localhost)**, a URL do banco deve ser configurada como:
 
-Isso assegura que os testes de banco de dados e as consultas realizadas localmente funcionem como esperado.
+    `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@localhost:5432/postgres`
+
+  - **Para execução em Docker**, a URL do banco deve ser configurada como:
+
+    `DATABASE_URL=postgresql+psycopg2://postgres:tata1212@db:5432/postgres`
+
+  Isso assegura que os testes de banco de dados e as consultas realizadas no ambiente de desenvolvimento funcionem corretamente, seja localmente ou dentro de um contêiner Docker.
