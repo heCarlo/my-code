@@ -10,7 +10,7 @@ Antes de rodar o projeto localmente, verifique se as seguintes ferramentas estã
 
 - **Python** (versão 3.8 ou superior)
 - **PostgreSQL** (instalação local)
-- **pip** ou **Poetry** para gerenciar pacotes Python
+- **pip** para gerenciar pacotes Python
 - **Alembic** para migrações do banco de dados
 
 ### Passo 1: Criar e Ativar o Ambiente Virtual
@@ -24,8 +24,6 @@ Antes de instalar as dependências, é necessário criar e ativar o ambiente vir
      ```bash
      python -m venv .venv
      ```
-
-   - Se estiver utilizando **Poetry**, o ambiente virtual será criado automaticamente quando você rodar `poetry install`.
 
 2. **Ativar o Ambiente Virtual**:
 
@@ -41,15 +39,11 @@ Antes de instalar as dependências, é necessário criar e ativar o ambiente vir
 
 ### Passo 2: Instalar as Dependências
 
-Após ativar o ambiente virtual, instale as dependências do projeto utilizando o gerenciador de pacotes Python (pip ou Poetry):
+Após ativar o ambiente virtual, instale as dependências do projeto utilizando o gerenciador de pacotes Python (pip):
 
 - Se estiver utilizando **pip**, execute o comando:
   
   `pip install -r requirements.txt`
-
-- Se estiver utilizando **Poetry**, execute o comando:
-  
-  `poetry install`
 
 ### Passo 3: Configurar o Banco de Dados PostgreSQL
 
