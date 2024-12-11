@@ -136,7 +136,7 @@ Para rodar os containers em segundo plano (modo "detached"), use a opção `-d`:
 
 Este comando irá inicializar a aplicação e o banco de dados (PostgreSQL) conforme configurado no `docker-compose.yml`. No caso do ambiente Docker, o comando `docker-compose` já está configurado para rodar as migrações automaticamente.
 
-## Solução para Problemas de Formato de Linha (CRLF para LF)
+## Solução para Problemas de Formato de Linha (CRLF para LF)   
 
 Quando scripts ou arquivos são criados ou editados em sistemas Windows, eles podem ser salvos com o formato de linha CRLF (`\r\n`), que não é reconhecido corretamente em ambientes Linux, como os utilizados nos containers Docker. Isso pode causar erros como:
 
